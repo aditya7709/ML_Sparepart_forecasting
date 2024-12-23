@@ -1,0 +1,113 @@
+# Solutions for Artificial Intelligence Practical Examination
+
+# ----- Slip 1 -----
+# Q1. Python program to find the sum of N numbers.
+def sum_of_numbers(n):
+    return sum(range(1, n + 1))
+
+# Q2. Python program to implement the Water Jug Problem.
+def water_jug_problem():
+    # Example solution for 3L and 5L jugs to measure 4L
+    from collections import deque
+    capacity = (0, 5, 3)  # Initial capacities
+    visited = set()
+    queue = deque([(0, 0)])
+
+    while queue:
+        jug1, jug2 = queue.popleft()
+        if (jug1, jug2) in visited:
+            continue
+        visited.add((jug1, jug2))
+        print(f"Jug1: {jug1}, Jug2: {jug2}")
+        if jug1 == 4 or jug2 == 4:
+            print("Goal reached!")
+            break
+
+        # Possible transitions
+        transitions = [
+            (capacity[1], jug2),  # Fill jug1
+            (jug1, capacity[2]),  # Fill jug2
+            (0, jug2),            # Empty jug1
+            (jug1, 0),            # Empty jug2
+            (jug1 - min(jug1, capacity[2] - jug2), jug2 + min(jug1, capacity[2] - jug2)),  # Pour jug1 -> jug2
+            (jug1 + min(jug2, capacity[1] - jug1), jug2 - min(jug2, capacity[1] - jug1)),  # Pour jug2 -> jug1
+        ]
+
+        queue.extend(transitions)
+
+# ----- Slip 2 -----
+# Q1. Python program to find the factorial of a given number.
+def factorial(n):
+    if n == 0 or n == 1:
+        return 1
+    return n * factorial(n - 1)
+
+# Q2. Python program to implement a simple chatbot.
+def simple_chatbot():
+    print("Chatbot: Hi! How can I help you today?")
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() in ["exit", "bye"]:
+            print("Chatbot: Goodbye!")
+            break
+        elif "name" in user_input.lower():
+            print("Chatbot: My name is SimpleBot.")
+        else:
+            print("Chatbot: I'm not sure how to respond to that.")
+
+# ----- Slip 3 -----
+# Q1. Python program to check whether a given number is perfect or not.
+def is_perfect_number(num):
+    divisors = [i for i in range(1, num) if num % i == 0]
+    return sum(divisors) == num
+
+# Q2. Python program to implement Depth First Search traversal.
+def depth_first_search(graph, start):
+    visited = set()
+    stack = [start]
+
+    while stack:
+        node = stack.pop()
+        if node not in visited:
+            visited.add(node)
+            print(node, end=" ")
+            stack.extend(graph[node] - visited)
+
+# ----- Slip 4 -----
+# Q1. Python program to check whether a given number is perfect.
+def check_perfect_number(n):
+    divisors = [i for i in range(1, n) if n % i == 0]
+    return sum(divisors) == n
+
+# Q2. Python program to implement Breadth First Search traversal.
+def breadth_first_search(graph, start):
+    visited = set()
+    queue = [start]
+
+    while queue:
+        node = queue.pop(0)
+        if node not in visited:
+            visited.add(node)
+            print(node, end=" ")
+            queue.extend(graph[node] - visited)
+
+# ----- Slip 5 -----
+# Q1. Python program to implement list operations (length, concatenation, membership, etc.).
+def list_operations():
+    my_list = [1, 2, 3, 4, 5]
+    print("Length:", len(my_list))
+    print("Concatenation:", my_list + [6, 7])
+    print("Membership:", 3 in my_list)
+    print("Iteration:", [x for x in my_list])
+    print("Indexing:", my_list[0])
+    print("Slicing:", my_list[1:4])
+
+# Q2. Python program to implement K-Nearest Neighbors algorithm.
+def knn_algorithm():
+    from sklearn.neighbors import KNeighborsClassifier
+    import numpy as np
+    X = np.array([[1, 2], [2, 3], [3, 4], [5, 6]])
+    y = np.array([0, 0, 1, 1])
+    knn = KNeighborsClassifier(n_neighbors=3)
+    knn.fit(X, y)
+    print("Prediction:", knn.predict([[3, 3]]))
