@@ -1,0 +1,130 @@
+# ----- Slip 6 -----
+# Q1. Python program to implement list methods (add, append, extend, delete).
+def list_methods():
+    my_list = [1, 2, 3]
+    my_list.append(4)
+    my_list.extend([5, 6])
+    print("After Append and Extend:", my_list)
+    del my_list[0]
+    print("After Deletion:", my_list)
+
+# Q2. Python program to implement regression algorithm.
+def regression_algorithm():
+    from sklearn.linear_model import LinearRegression
+    import numpy as np
+    X = np.array([[1], [2], [3], [4]])
+    y = np.array([2, 4, 6, 8])
+    model = LinearRegression()
+    model.fit(X, y)
+    print("Coefficient:", model.coef_)
+    print("Intercept:", model.intercept_)
+    print("Prediction:", model.predict([[5]]))
+
+# ----- Slip 7 -----
+# Q1. Python program to implement a simple chatbot.
+def chatbot():
+    print("Hello! Ask me something.")
+    while True:
+        query = input("You: ")
+        if query.lower() in ['exit', 'quit']:
+            print("Goodbye!")
+            break
+        else:
+            print("I am here to help!")
+
+# Q2. Python program to implement Random Forest algorithm.
+def random_forest_algorithm():
+    from sklearn.ensemble import RandomForestClassifier
+    import numpy as np
+    X = np.array([[1, 2], [2, 3], [3, 4], [4, 5]])
+    y = np.array([0, 0, 1, 1])
+    clf = RandomForestClassifier()
+    clf.fit(X, y)
+    print("Prediction:", clf.predict([[3, 3]]))
+
+# ----- Slip 8 -----
+# Q1. Python program to find the sum of N numbers.
+def sum_n_numbers(n):
+    return sum(range(1, n + 1))
+
+# Q2. Python program to implement the Traveling Salesman Problem.
+def traveling_salesman_problem():
+    from itertools import permutations
+
+    def calculate_distance(path, graph):
+        return sum(graph[path[i - 1]][path[i]] for i in range(len(path)))
+
+    graph = {
+        'A': {'A': 0, 'B': 10, 'C': 15, 'D': 20},
+        'B': {'A': 10, 'B': 0, 'C': 35, 'D': 25},
+        'C': {'A': 15, 'B': 35, 'C': 0, 'D': 30},
+        'D': {'A': 20, 'B': 25, 'C': 30, 'D': 0},
+    }
+    cities = list(graph.keys())
+    min_distance = float('inf')
+    best_path = None
+
+    for perm in permutations(cities):
+        current_distance = calculate_distance(perm, graph)
+        if current_distance < min_distance:
+            min_distance = current_distance
+            best_path = perm
+
+    print(f"Optimal Path: {best_path} with distance {min_distance}")
+
+# ----- Slip 9 -----
+# Q1. Python program to implement list methods (add, append, extend, delete).
+def list_methods_v2():
+    my_list = [10, 20, 30]
+    my_list.append(40)
+    my_list.extend([50, 60])
+    print("Appended List:", my_list)
+    del my_list[1]
+    print("List after deletion:", my_list)
+
+# Q2. Python program to implement 8-puzzle problem using Breadth First Search.
+def eight_puzzle_bfs(start, goal):
+    from collections import deque
+
+    def is_solvable(puzzle):
+        inv_count = 0
+        flat_puzzle = [tile for row in puzzle for tile in row if tile != 0]
+        for i in range(len(flat_puzzle)):
+            for j in range(i + 1, len(flat_puzzle)):
+                if flat_puzzle[i] > flat_puzzle[j]:
+                    inv_count += 1
+        return inv_count % 2 == 0
+
+    def find_blank(puzzle):
+        for i, row in enumerate(puzzle):
+            if 0 in row:
+                return i, row.index(0)
+
+    def move_blank(puzzle, direction):
+        x, y = find_blank(puzzle)
+        moves = {'up': (-1, 0), 'down': (1, 0), 'left': (0, -1), 'right': (0, 1)}
+        dx, dy = moves[direction]
+        new_x, new_y = x + dx, y + dy
+        if 0 <= new_x < len(puzzle) and 0 <= new_y < len(puzzle[0]):
+            new_puzzle = [row[:] for row in puzzle]
+            new_puzzle[x][y], new_puzzle[new_x][new_y] = new_puzzle[new_x][new_y], new_puzzle[x][y]
+            return new_puzzle
+        return None
+
+    if not is_solvable(start):
+        print("The puzzle is unsolvable.")
+        return
+
+    visited = set()
+    queue = deque([(start, [])])
+
+    while queue:
+        current, path = queue.popleft()
+        visited.add(tuple(map(tuple, current)))
+        if current == goal:
+            print("Solution Path:", path)
+            return
+        for direction in ['up', 'down', 'left', 'right']:
+            next_state = move_blank(current, direction)
+            if next_state and tuple(map(tuple, next_state)) not in visited:
+                queue.append((next_state, path + [direction]))
